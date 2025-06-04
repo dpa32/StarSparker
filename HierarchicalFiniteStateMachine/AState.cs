@@ -38,8 +38,8 @@ public abstract class AState
    
     protected virtual void ChangeSubState<T>(Type subStateType, Dictionary<Type, T> subStateDic, T superState) where T : AState
     {
-        // Dictionary Á¶È¸
-        if (!subStateDic.TryGetValue(subStateType, out var newSubState)) // µî·ÏµÈ State ¾øÀ½
+        // Dictionary ì¡°íšŒ
+        if (!subStateDic.TryGetValue(subStateType, out var newSubState)) // ë“±ë¡ëœ State ì—†ìŒ
         {
             newSubState = (T)Activator.CreateInstance(subStateType, new object[] { _playerHFSMHandler });
             if (subStateType == superState._defaultSubStateType)
@@ -48,12 +48,12 @@ public abstract class AState
             }
             subStateDic.Add(subStateType, newSubState);
         }
-        if (superState._currentSubState == newSubState) // State º¯È­ ¾øÀ½
+        if (superState._currentSubState == newSubState) // State ë³€í™” ì—†ìŒ
         {
             return;
         }
 
-        // SuperStateÀÇ ActionMap È°¼ºÈ­
+        // SuperStateì˜ ActionMap í™œì„±í™”
         _playerHFSMHandler.EnableStateMap(typeof(T));
 
         superState._currentSubState?.Exit();
@@ -61,7 +61,7 @@ public abstract class AState
         superState._currentSubState.Enter();
 
 
-        // Çö state µğ¹ö±ë
+        // í˜„ state ë””ë²„ê¹…
         _playerHFSMHandler.CurrentPlayerSuperState = typeof(T);
         _playerHFSMHandler.CurrentPlayerSubState = newSubState.GetType();
 
